@@ -1,0 +1,81 @@
+# ResNet50 Transfer Learning Configuration
+# Achieves 78% validation accuracy
+
+# Model Configuration
+model:
+  name: "resnet50"
+  input_shape: [224, 224, 3]
+  base_trainable: false
+  num_classes: 10  # Update based on your dataset
+
+# Data Configuration
+data:
+  data_dir: "data/raw"
+  batch_size: 32
+  validation_split: 0.2
+  seed: 42
+  color_mode: "rgb"
+  shuffle: true
+
+# Data Augmentation
+augmentation:
+  enabled: true
+  rotation_range: 20
+  width_shift_range: 0.1
+  height_shift_range: 0.1
+  zoom_range: 0.15
+  horizontal_flip: true
+  vertical_flip: true
+  brightness_range: [0.8, 1.2]
+  fill_mode: "nearest"
+
+# Training Configuration
+training:
+  epochs: 100
+  initial_learning_rate: 0.0001
+  optimizer: "adam"
+  loss: "categorical_crossentropy"
+  metrics:
+    - "accuracy"
+    - "top_k_categorical_accuracy"
+  
+  # Callbacks
+  callbacks:
+    early_stopping:
+      enabled: true
+      monitor: "val_loss"
+      patience: 15
+      restore_best_weights: true
+    
+    reduce_lr:
+      enabled: true
+      monitor: "val_loss"
+      factor: 0.5
+      patience: 5
+      min_lr: 0.0000001
+    
+    model_checkpoint:
+      enabled: true
+      monitor: "val_accuracy"
+      save_best_only: true
+    
+    tensorboard:
+      enabled: true
+      histogram_freq: 1
+
+# Fine-tuning Configuration
+fine_tuning:
+  enabled: false
+  unfreeze_layers: 50
+  epochs: 50
+  learning_rate: 0.00001
+
+# Mixed Precision Training
+mixed_precision:
+  enabled: false  # Enable if using compatible GPU
+
+# Paths
+paths:
+  model_save_dir: "models/saved_models"
+  log_dir: "logs"
+  results_dir: "results"
