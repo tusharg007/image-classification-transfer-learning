@@ -233,7 +233,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 👤 Author
 
-**Tushar Gupta**
+**Tushar Ghosh**
 - GitHub: [@tusharg007](https://github.com/tusharg007)
 
 ## 🙏 Acknowledgments
